@@ -21,28 +21,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
     digits.forEach(button => {
         button.addEventListener("click", () => {
-            display.push(button.textContent);
-            displayDigits.textContent = display.join("");
+            // prevent leading zeros
+            if (button.textContent === "0" && display.length === 0) {
+                return;
+            } else {
+                display.push(button.textContent);
+                displayDigits.textContent = display.join("");
+            };
         });
     });
     
     let operands = [];
-    let operator = "";
+    let operation = "";
     let operators = document.querySelectorAll(".operator");
 
     operators.forEach(button => {
         button.addEventListener("click", () => {
-            if (operator === "") {
-                operands.push(parseInt(displayDigits.textContent));
-                operator = button.textContent;
-            } else {
-                operands.push(parseInt(displayDigits.textContent));
-                result = operate(operations[operator], operands[0], operands[1]);
-                displayDigits.textContent = result;
-                operands = [result];
-                console.log(operands);
-            }
+            // empty the display array for subsequent entries
             display = [];
+
+            // push current display number(s) into operands array
+            // add condition to prevent ++ etc
+            operands.push(parseInt(displayDigits.textContent));
+            console.log(`pushed ${displayDigits.textContent} into ${operands}`);
+
+            // register the button pressed
+            let operator = button.textContent;
+            console.log(`button pressed: ${operator}`);
+
+            // if there are two operands when a button is pushed, run the saved operation
+            if (operands.length === 2) {
+                result = operate(operations[operation], operands[0], operands[1]);
+                displayDigits.textContent = result;
+                console.log(`${operands[0]} ${operation} ${operands[1]} = ${result}`);
+
+                // add result to operands array for next operation
+                operands = [result];
+            };
+
+            // if button is a math operator, save it to operation var declared above
+            // otherwise clear if Equal
+            if (operator != "=") {
+                operation = operator;
+                console.log(`next operation will be: ${operation}`);
+            } else {
+                operation = "";
+                operands = [];
+            }
         });
     });
 
@@ -51,6 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
         displayDigits.textContent = "0";
         display = [];
         operands = [];
-        operator = "";
+        // operator = "";
     });
 });
