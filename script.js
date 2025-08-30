@@ -52,9 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
             let operator = button.textContent;
 
             if (operands.length === 2) {
-                result = operate(operations[operation], operands[0], operands[1]);
-                displayDigits.textContent = result;
-                operands = [result];
+                if (operands[1] === 0 && operation === "÷") {
+                    displayDigits.textContent = "Nope, nice try"
+                } else {
+                    result = operate(operations[operation], operands[0], operands[1]);
+                    displayDigits.textContent = result;
+                    operands = [result];
+                }
+                
             };
 
             if (operator != "=") {
