@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (button.textContent === "0" && display.length === 0) {
                 displayDigits.textContent = 0;
             } else {
+                // allow one instance of decimal
+                if (button.textContent === "." && display.includes(".")) {
+                    return;
+                }
                 display.push(button.textContent);
                 displayDigits.textContent = display.join("");
             };
@@ -44,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             display = [];
 
             if (toggleOperation) {
-                operands.push(parseInt(displayDigits.textContent));
+                operands.push(parseFloat(displayDigits.textContent));
             }
 
             toggleOperation = false;
@@ -59,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     displayDigits.textContent = result;
                     operands = [result];
                 }
-                
             };
 
             if (operator != "=") {
