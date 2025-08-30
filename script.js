@@ -21,9 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let display = [];
     let displayDigits = document.querySelector("#displayDigits");
     let digits = document.querySelectorAll(".digit");
+    const clear = document.querySelector("#clear");
 
     digits.forEach(button => {
         button.addEventListener("click", () => {
+            // switch AC button to backspace
+            clear.textContent = "⌫";
+
             // prevent leading zeros while allowing 0 as operand
             if (button.textContent === "0" && display.length === 0) {
                 displayDigits.textContent = 0;
@@ -63,6 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     displayDigits.textContent = result;
                     operands = [result];
                 }
+                clear.textContent = "AC";
+
+
             };
 
             if (operator != "=") {
@@ -74,10 +81,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    const allClear = document.querySelector("#clear");
-    allClear.addEventListener("click", () => {
-        displayDigits.textContent = "0";
-        display = [];
-        operands = [];
+    // AC button switches to backspace in the middle of a calculation
+    clear.addEventListener("click", () => {
+        if (clear.textContent === "AC") {
+            displayDigits.textContent = "0";
+            display = [];
+            operands = [];
+        } else {
+            console.log(clear.textContent);
+            display.pop();
+            displayDigits.textContent = display.join("");
+        };
     });
 });
