@@ -88,9 +88,12 @@ document.addEventListener("DOMContentLoaded", () => {
             display = [];
             operands = [];
         } else {
-            console.log(clear.textContent);
             display.pop();
             displayDigits.textContent = display.join("");
+            if (display.length === 0) {
+                displayDigits.textContent = "0";
+                clear.textContent = "AC"
+            }
         };
     });
 });
