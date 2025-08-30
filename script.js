@@ -3,8 +3,15 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
-function operate(operator, a, b) {
-    return operator(a, b);
+const operations = {
+    add: add,
+    subtract: subtract,
+    multiply: multiply,
+    divide: divide
+};
+
+function operate(operation, a, b) {
+    return operation(a, b);
 }
 
 // Create the functions that populate the display when you click the digit buttons
@@ -22,13 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
     
 // Store the content of the display in a variable for use in the next step
     let operands = [];
-    let operator;
+    let operator = "";
     let operators = document.querySelectorAll(".operator");
 
     operators.forEach(button => {
         button.addEventListener("click", () => {
-            operator = button.value;
-            operands.push(parseInt(displayDigits.textContent));
+            if (operator === "") {
+                operands.push(parseInt(displayDigits.textContent));
+                operator = button.value;
+            } else {
+                operands.push(parseInt(displayDigits.textContent));
+                result = operate(operations[operator], operands[0], operands[1]);
+                displayDigits.textContent = result;
+            }
+            display = [];
         });
     });
 });
